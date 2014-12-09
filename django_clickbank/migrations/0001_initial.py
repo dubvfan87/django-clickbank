@@ -1,147 +1,97 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Post'
-        db.create_table(u'django_clickbank_post', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('post_data', self.gf('django.db.models.fields.CharField')(max_length=4096, null=True, blank=True)),
-            ('get_data', self.gf('django.db.models.fields.CharField')(max_length=4096, null=True, blank=True)),
-            ('failed', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-        ))
-        db.send_create_signal(u'django_clickbank', ['Post'])
+    dependencies = [
+    ]
 
-        # Adding model 'Notification'
-        db.create_table(u'django_clickbank_notification', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('receipt', self.gf('django.db.models.fields.CharField')(unique=True, max_length=13)),
-            ('role', self.gf('django.db.models.fields.CharField')(max_length=9)),
-            ('transaction_type', self.gf('django.db.models.fields.CharField')(max_length=15)),
-            ('transaction_vendor', self.gf('django.db.models.fields.CharField')(max_length=10, blank=True)),
-            ('transaction_affiliate', self.gf('django.db.models.fields.CharField')(max_length=10, null=True, blank=True)),
-            ('recieved_amount', self.gf('django.db.models.fields.DecimalField')(max_digits=8, decimal_places=2)),
-            ('order_amount', self.gf('django.db.models.fields.DecimalField')(max_digits=8, decimal_places=2)),
-            ('tax_amount', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=8, decimal_places=2, blank=True)),
-            ('payment_method', self.gf('django.db.models.fields.CharField')(max_length=4, null=True, blank=True)),
-            ('currency', self.gf('django.db.models.fields.CharField')(max_length=3)),
-            ('tracking_id', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('notification_version', self.gf('django.db.models.fields.CharField')(max_length=5, null=True, blank=True)),
-            ('extra_data', self.gf('django.db.models.fields.CharField')(max_length=1024, null=True, blank=True)),
-            ('transaction_date', self.gf('django.db.models.fields.DateTimeField')()),
-            ('post_data', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['django_clickbank.Post'], null=True, blank=True)),
-            ('sender_ip', self.gf('django.db.models.fields.IPAddressField')(max_length=15, blank=True)),
-            ('order_language', self.gf('django.db.models.fields.CharField')(max_length=20, null=True, blank=True)),
-            ('product_title', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('product_type', self.gf('django.db.models.fields.CharField')(max_length=11)),
-            ('product_id', self.gf('django.db.models.fields.CharField')(max_length=5)),
-            ('verification_passed', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('parent_receipt', self.gf('django.db.models.fields.CharField')(max_length=13, null=True, blank=True)),
-            ('upsell_flow', self.gf('django.db.models.fields.CharField')(max_length=20, null=True, blank=True)),
-            ('rebill_amount', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=8, decimal_places=2, blank=True)),
-            ('processed_payments', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
-            ('future_payments', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
-            ('next_payment_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('rebill_status', self.gf('django.db.models.fields.CharField')(max_length=10, null=True, blank=True)),
-            ('rebill_frequency', self.gf('django.db.models.fields.CharField')(max_length=20, null=True, blank=True)),
-            ('full_name', self.gf('django.db.models.fields.CharField')(max_length=510)),
-            ('first_name', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('last_name', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('province', self.gf('django.db.models.fields.CharField')(max_length=2, null=True, blank=True)),
-            ('postal_code', self.gf('django.db.models.fields.CharField')(max_length=16, null=True, blank=True)),
-            ('city', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('country', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('country_code', self.gf('django.db.models.fields.CharField')(max_length=2, null=True, blank=True)),
-            ('email', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('address1', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('address2', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('shipping_address1', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('shipping_address2', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('shipping_city', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('shipping_county', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('shipping_province', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('shipping_postal_code', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('shipping_country', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('shipping_amount', self.gf('django.db.models.fields.DecimalField')(null=True, max_digits=8, decimal_places=2, blank=True)),
-        ))
-        db.send_create_signal(u'django_clickbank', ['Notification'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'Post'
-        db.delete_table(u'django_clickbank_post')
-
-        # Deleting model 'Notification'
-        db.delete_table(u'django_clickbank_notification')
-
-
-    models = {
-        u'django_clickbank.notification': {
-            'Meta': {'object_name': 'Notification'},
-            'address1': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'address2': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'city': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'country': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'country_code': ('django.db.models.fields.CharField', [], {'max_length': '2', 'null': 'True', 'blank': 'True'}),
-            'currency': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
-            'email': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'extra_data': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'null': 'True', 'blank': 'True'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'full_name': ('django.db.models.fields.CharField', [], {'max_length': '510'}),
-            'future_payments': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'next_payment_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'notification_version': ('django.db.models.fields.CharField', [], {'max_length': '5', 'null': 'True', 'blank': 'True'}),
-            'order_amount': ('django.db.models.fields.DecimalField', [], {'max_digits': '8', 'decimal_places': '2'}),
-            'order_language': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
-            'parent_receipt': ('django.db.models.fields.CharField', [], {'max_length': '13', 'null': 'True', 'blank': 'True'}),
-            'payment_method': ('django.db.models.fields.CharField', [], {'max_length': '4', 'null': 'True', 'blank': 'True'}),
-            'post_data': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['django_clickbank.Post']", 'null': 'True', 'blank': 'True'}),
-            'postal_code': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True', 'blank': 'True'}),
-            'processed_payments': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'product_id': ('django.db.models.fields.CharField', [], {'max_length': '5'}),
-            'product_title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'product_type': ('django.db.models.fields.CharField', [], {'max_length': '11'}),
-            'province': ('django.db.models.fields.CharField', [], {'max_length': '2', 'null': 'True', 'blank': 'True'}),
-            'rebill_amount': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '8', 'decimal_places': '2', 'blank': 'True'}),
-            'rebill_frequency': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
-            'rebill_status': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
-            'receipt': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '13'}),
-            'recieved_amount': ('django.db.models.fields.DecimalField', [], {'max_digits': '8', 'decimal_places': '2'}),
-            'role': ('django.db.models.fields.CharField', [], {'max_length': '9'}),
-            'sender_ip': ('django.db.models.fields.IPAddressField', [], {'max_length': '15', 'blank': 'True'}),
-            'shipping_address1': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'shipping_address2': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'shipping_amount': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '8', 'decimal_places': '2', 'blank': 'True'}),
-            'shipping_city': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'shipping_country': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'shipping_county': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'shipping_postal_code': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'shipping_province': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'tax_amount': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '8', 'decimal_places': '2', 'blank': 'True'}),
-            'tracking_id': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'transaction_affiliate': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
-            'transaction_date': ('django.db.models.fields.DateTimeField', [], {}),
-            'transaction_type': ('django.db.models.fields.CharField', [], {'max_length': '15'}),
-            'transaction_vendor': ('django.db.models.fields.CharField', [], {'max_length': '10', 'blank': 'True'}),
-            'upsell_flow': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
-            'verification_passed': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
-        },
-        u'django_clickbank.post': {
-            'Meta': {'object_name': 'Post'},
-            'failed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'get_data': ('django.db.models.fields.CharField', [], {'max_length': '4096', 'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'post_data': ('django.db.models.fields.CharField', [], {'max_length': '4096', 'null': 'True', 'blank': 'True'}),
-            'time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'})
-        }
-    }
-
-    complete_apps = ['django_clickbank']
+    operations = [
+        migrations.CreateModel(
+            name='Notification',
+            fields=[
+                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('receipt', models.CharField(max_length=13, db_index=True)),
+                ('role', models.CharField(max_length=9, choices=[('VENDOR', 'Vendor'), ('AFFILIATE', 'Affiliate')])),
+                ('transaction_type', models.CharField(max_length=15, choices=[('SALE', 'Sale'), ('BILL', 'Rebill'), ('RFND', 'Refund'), ('CGBK', 'Chargeback'), ('INSF', 'Insufficient Funds (eCheck)'), ('CANCEL-REBILL', 'Cancel Rebill'), ('UNCANCEL-REBILL', 'Resume Rebill'), ('TEST', 'IPN Test'), ('TEST_SALE', 'Test Sale'), ('TEST_BILL', 'Test Rebill'), ('TEST_RFND', 'Test Refund'), ('TEST_CHGBK', 'Test Chargeback')])),
+                ('transaction_vendor', models.CharField(max_length=10, blank=True)),
+                ('transaction_affiliate', models.CharField(null=True, max_length=10, blank=True)),
+                ('recieved_amount', models.DecimalField(decimal_places=2, max_digits=8)),
+                ('order_amount', models.DecimalField(decimal_places=2, max_digits=8)),
+                ('tax_amount', models.DecimalField(null=True, blank=True, max_digits=8, decimal_places=2)),
+                ('payment_method', models.CharField(null=True, max_length=4, blank=True, choices=[('PYPL', 'Paypal'), ('VISA', 'Visa'), ('MSTR', 'Mastercard'), ('DISC', 'Discover'), ('AMEX', 'American Express'), ('SWIT', 'Switch?'), ('SOLO', 'Solo'), ('JCBC', 'JCBC'), ('DNRS', 'Diners Club'), ('ENRT', 'ENRT'), ('AUST', 'AUST'), ('BLME', 'BLME'), ('STVA', 'STVA'), ('MAES', 'Maestro'), ('TEST', 'Test Credit Card')])),
+                ('currency', models.CharField(max_length=3)),
+                ('tracking_id', models.CharField(null=True, max_length=255, blank=True)),
+                ('notification_version', models.CharField(null=True, max_length=5, blank=True)),
+                ('extra_data', models.CharField(null=True, max_length=1024, blank=True)),
+                ('transaction_date', models.DateTimeField()),
+                ('sender_ip', models.IPAddressField(blank=True)),
+                ('order_language', models.CharField(null=True, max_length=20, blank=True)),
+                ('product_title', models.CharField(null=True, max_length=255, blank=True)),
+                ('product_type', models.CharField(max_length=11, choices=[('STANDARD', 'Standard'), ('RECURRING', 'Recurring')])),
+                ('product_id', models.CharField(max_length=5)),
+                ('verification_passed', models.BooleanField(default=True)),
+                ('parent_receipt', models.CharField(null=True, max_length=13, blank=True, db_index=True)),
+                ('upsell_flow', models.CharField(null=True, max_length=20, blank=True)),
+                ('rebill_amount', models.DecimalField(null=True, blank=True, max_digits=8, decimal_places=2)),
+                ('rebill_parent_receipt', models.CharField(null=True, max_length=13, blank=True, db_index=True)),
+                ('processed_payments', models.IntegerField(null=True, blank=True)),
+                ('future_payments', models.IntegerField(null=True, blank=True)),
+                ('next_payment_date', models.DateField(null=True, blank=True)),
+                ('rebill_status', models.CharField(null=True, max_length=10, blank=True, choices=[('ACTIVE', 'Active'), ('COMPLETED', 'Completed'), ('CANCELED', 'Cancelled')])),
+                ('rebill_frequency', models.CharField(null=True, max_length=20, blank=True)),
+                ('full_name', models.CharField(max_length=510)),
+                ('first_name', models.CharField(null=True, max_length=255, blank=True)),
+                ('last_name', models.CharField(null=True, max_length=255, blank=True)),
+                ('province', models.CharField(null=True, max_length=255, blank=True)),
+                ('postal_code', models.CharField(null=True, max_length=16, blank=True)),
+                ('city', models.CharField(null=True, max_length=255, blank=True)),
+                ('country', models.CharField(null=True, max_length=255, blank=True)),
+                ('country_code', models.CharField(null=True, max_length=2, blank=True)),
+                ('email', models.CharField(max_length=255)),
+                ('address1', models.CharField(null=True, max_length=255, blank=True)),
+                ('address2', models.CharField(null=True, max_length=255, blank=True)),
+                ('shipping_address1', models.CharField(null=True, max_length=255, blank=True)),
+                ('shipping_address2', models.CharField(null=True, max_length=255, blank=True)),
+                ('shipping_city', models.CharField(null=True, max_length=255, blank=True)),
+                ('shipping_county', models.CharField(null=True, max_length=255, blank=True)),
+                ('shipping_province', models.CharField(null=True, max_length=255, blank=True)),
+                ('shipping_postal_code', models.CharField(null=True, max_length=255, blank=True)),
+                ('shipping_country', models.CharField(null=True, max_length=255, blank=True)),
+                ('shipping_amount', models.DecimalField(null=True, blank=True, max_digits=8, decimal_places=2)),
+            ],
+            options={
+                'verbose_name': 'notification',
+                'verbose_name_plural': 'notifications',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Post',
+            fields=[
+                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
+                ('post_data', models.CharField(null=True, max_length=4096, blank=True)),
+                ('get_data', models.CharField(null=True, max_length=4096, blank=True)),
+                ('failed', models.BooleanField(default=False)),
+                ('time', models.DateTimeField(auto_now_add=True)),
+            ],
+            options={
+                'verbose_name': 'post',
+                'verbose_name_plural': 'posts',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='notification',
+            name='post_data',
+            field=models.ForeignKey(blank=True, null=True, to='django_clickbank.Post'),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='notification',
+            unique_together=set([('receipt', 'transaction_type')]),
+        ),
+    ]
