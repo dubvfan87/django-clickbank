@@ -20,9 +20,10 @@ INSTALLED_APPS=[
 ]
 
 #see http://django.readthedocs.org/en/latest/releases/1.7.html#standalone-scripts
-from django import VERSION
-if VERSION >= (1, 7):
+try:
 	django.setup()
+except AttributeError:
+	pass
 
 from django import VERSION
 if VERSION <= (1, 6):
