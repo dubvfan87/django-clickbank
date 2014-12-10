@@ -31,7 +31,7 @@ def verify_secret(post, secret_key=settings.CLICKBANK_SECRET_KEY):
 				data.append(post[field])
 		data.append(secret_key)
 		hash_string = '|'.join(data)
-		hex_digest = unicode(hashlib.sha1(hash_string).hexdigest()[:8].upper(), encoding='ascii')
+		hex_digest = hashlib.sha1(hash_string.encode('utf-8')).hexdigest()[:8].upper()
 		verification = post_hash == hex_digest
 		#zimport ipdb; ipdb.set_trace()
 		logger.debug('Verification: cverify = {0}'.format(repr(post_hash)))
@@ -41,7 +41,7 @@ def verify_secret(post, secret_key=settings.CLICKBANK_SECRET_KEY):
 		logger.debug('Verification: {0}'.format(verification))
 
 		return verification
-	except Exception, e:
+	except Exception as e:
 		raise
 		logger.debug('Notification Verification Failed {0}'.format(e))
 		return False
@@ -66,7 +66,7 @@ def make_secret(post, secret_key=settings.CLICKBANK_SECRET_KEY):
 			data.append(post[field])
 	data.append(secret_key)
 	hash_string = '|'.join(data)
-	return hashlib.sha1(hash_string).hexdigest()[:8].upper()
+	return hashlib.sha1(hash_string.encode('utf-8')).hexdigest()[:8].upper()
 
 
 class conditional_decorator(object):
@@ -139,7 +139,7 @@ def remap_post(data):
 		u'ccustshippingstate': u'shipping_province'
 	}
 
-	for key, value in data.iteritems():
+	for key, value in data.items():
 		if key in MAPPING:
 			remapped_data[MAPPING[key]] = value
 

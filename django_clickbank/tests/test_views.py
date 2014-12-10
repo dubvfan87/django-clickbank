@@ -1,3 +1,8 @@
+#see http://django.readthedocs.org/en/latest/releases/1.7.html#standalone-scripts
+import django
+django.setup()
+
+
 from django.core.urlresolvers import reverse
 from django.test import TestCase, Client
 from django.test.utils import override_settings

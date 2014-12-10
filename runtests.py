@@ -22,7 +22,17 @@ if not settings.configured:
 			'django_nose',
 		],
 		TEST_RUNNER = 'django_nose.NoseTestSuiteRunner',
+		MIDDLEWARE_CLASSES = (
+		    'django.contrib.sessions.middleware.SessionMiddleware',
+    		'django.contrib.auth.middleware.AuthenticationMiddleware',
+    		'django.contrib.messages.middleware.MessageMiddleware',
+		)
 	)
+
+
+#see http://django.readthedocs.org/en/latest/releases/1.7.html#standalone-scripts
+import django
+django.setup()
 
 
 def runtests(*test_args):

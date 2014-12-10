@@ -76,7 +76,7 @@ def ipn(request, get=False):
 				# We want to be able to do more with it before the post_create and post_save signals
 				# are called.
 				notification = form.save(commit=False)
-			except Exception, e:
+			except Exception as e:
 				raise NotificationFailedValidation(e)
 		else:
 			if '__all__' in form.errors:
