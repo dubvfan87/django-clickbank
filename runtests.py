@@ -19,12 +19,6 @@ INSTALLED_APPS=[
 	'django_nose',
 ]
 
-#see http://django.readthedocs.org/en/latest/releases/1.7.html#standalone-scripts
-try:
-	django.setup()
-except AttributeError:
-	pass
-
 from django import VERSION
 if VERSION <= (1, 6):
 	INSTALLED_APPS.append('south')
@@ -54,6 +48,13 @@ if not settings.configured:
 		SOUTH_MIGRATION_MODULES=SOUTH_MIGRATION_MODULES,
 		SOUTH_TESTS_MIGRATE=True,
 	)
+
+
+#see http://django.readthedocs.org/en/latest/releases/1.7.html#standalone-scripts
+try:
+	django.setup()
+except AttributeError:
+	pass
 
 
 def runtests(*test_args):
