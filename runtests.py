@@ -3,12 +3,43 @@
 from os.path import dirname, abspath
 import sys
 
+import django
 from django.conf import settings
 from django.core.management import call_command
 from django_clickbank import settings as django_clickbank_defaults
 
+INSTALLED_APPS=[
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.admin',
+    'django.contrib.humanize',
+    'django.contrib.sites',
+	'django_clickbank',
+	'django_nose',
+]
+
+#see http://django.readthedocs.org/en/latest/releases/1.7.html#standalone-scripts
+from django import VERSION
+if VERSION >= (1, 7):
+	django.setup()
+
+from django import VERSION
+if VERSION <= (1, 6):
+	INSTALLED_APPS.append('south')
+	SOUTH_MIGRATION_MODULES = {
+        'django_clickbank': 'django_clickbank.south_migrations',
+    }
+else:
+	SOUTH_MIGRATION_MODULES = None  
+
 if not settings.configured:
 	settings.configure(
+		MIDDLEWARE_CLASSES = (
+		    'django.contrib.sessions.middleware.SessionMiddleware',
+    		'django.contrib.auth.middleware.AuthenticationMiddleware',
+    		'django.contrib.messages.middleware.MessageMiddleware',
+		),
 		CLICKBANK_DEBUG=False,
 		CLICKBANK_STORE_POSTS=True,
 		CLICKBANK_KEEP_INVALID=True,
@@ -17,22 +48,11 @@ if not settings.configured:
 		CLICKBANK_SECRET_KEY='76AFC0778E648BDA05705047BAFA96ED',
 		ROOT_URLCONF='django_clickbank.urls',
 		DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3','NAME': ':memory:',}},
-		INSTALLED_APPS=[
-			'django_clickbank',
-			'django_nose',
-		],
+		INSTALLED_APPS=INSTALLED_APPS,
 		TEST_RUNNER = 'django_nose.NoseTestSuiteRunner',
-		MIDDLEWARE_CLASSES = (
-		    'django.contrib.sessions.middleware.SessionMiddleware',
-    		'django.contrib.auth.middleware.AuthenticationMiddleware',
-    		'django.contrib.messages.middleware.MessageMiddleware',
-		)
+		SOUTH_MIGRATION_MODULES=SOUTH_MIGRATION_MODULES,
+		SOUTH_TESTS_MIGRATE=True,
 	)
-
-
-#see http://django.readthedocs.org/en/latest/releases/1.7.html#standalone-scripts
-import django
-django.setup()
 
 
 def runtests(*test_args):
